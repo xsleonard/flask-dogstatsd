@@ -1,0 +1,6 @@
+# tests
+mock
+coverage
+nose
+flake8
+

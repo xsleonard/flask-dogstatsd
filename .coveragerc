@@ -1,0 +1,2 @@
+[run]
+source = flask_dogstatsd,__about__
