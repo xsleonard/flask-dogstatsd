@@ -10,13 +10,19 @@ class TestDogStatsd(TestCase):
         super(TestDogStatsd, self).setUp()
         self.app = Flask(__name__)
 
-    # py2.6 crud
-    def assertIsNone(self, thing):
-        self.assertIs(thing, None)
+    def assertIsNone(self, a):
+        # Python2.6 compatibility
+        if hasattr(super(TestDogStatsd, self), 'assertIsNone'):
+            super(TestDogStatsd, self).assertIsNone(a)
+        else:
+            self.assertTrue(a is None)
 
-    # py2.6 crud
-    def assertIsNotNone(self, thing):
-        self.assertIsNot(thing, None)
+    def assertIsNotNone(self, a):
+        # Python2.6 compatibility
+        if hasattr(super(TestDogStatsd, self), 'assertIsNotNone'):
+            super(TestDogStatsd, self).assertIsNotNone(a)
+        else:
+            self.assertTrue(a is not None)
 
     @patch('statsd.DogStatsd.connect')
     def test_init_app(self, mock_connect):
