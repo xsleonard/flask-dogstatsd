@@ -10,6 +10,14 @@ class TestDogStatsd(TestCase):
         super(TestDogStatsd, self).setUp()
         self.app = Flask(__name__)
 
+    # py2.6 crud
+    def assertIsNone(self, thing):
+        self.assertIs(thing, None)
+
+    # py2.6 crud
+    def assertIsNotNone(self, thing):
+        self.assertIsNot(thing, None)
+
     @patch('statsd.DogStatsd.connect')
     def test_init_app(self, mock_connect):
         dog = DogStatsd()
