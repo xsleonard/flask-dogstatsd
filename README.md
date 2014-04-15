@@ -29,7 +29,7 @@ pip install -r tests/requirements.txt
 Example
 =======
 
-```
+```python
 # app.py
 from flask import Flask
 from flask.ext.dogstatsd import DogStatsd
@@ -37,6 +37,7 @@ from flask.ext.dogstatsd import DogStatsd
 app = Flask(__name__)
 app.config['DOGSTATSD_HOST'] = 'localhost' # This is the default
 app.config['DOGSTATSD_PORT'] = 8125 # This is the default
+
 dogstatsd = DogStatsd(app)
 
 @app.route('/'):
