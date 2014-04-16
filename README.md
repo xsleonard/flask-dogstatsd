@@ -37,6 +37,7 @@ from flask.ext.dogstatsd import DogStatsd
 app = Flask(__name__)
 app.config['DOGSTATSD_HOST'] = 'localhost' # This is the default
 app.config['DOGSTATSD_PORT'] = 8125 # This is the default
+app.config['DOGSTATSD_PREFIX'] = 'app' # False-y values disable prefixing
 
 dogstatsd = DogStatsd(app)
 
@@ -44,6 +45,7 @@ dogstatsd = DogStatsd(app)
 def index():
     # See dogstatsd-python for the full API.  
     # Methods are forwarded to that.
+    # Since our prefix is 'app', the full key will be 'app.index.views'
     dogstatsd.increment('index.views')
     return 'Home'
 ```

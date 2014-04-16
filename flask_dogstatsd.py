@@ -13,14 +13,26 @@ class DogStatsd(object):
             self.init_app(app)
 
     def init_app(self, app):
-        self.app = app
         app.statsd = self
+        self.app = app
+        self.prefix = app.config.get('DOGSTATSD_PREFIX')
         host = app.config.get('DOGSTATSD_HOST', 'localhost')
         port = app.config.get('DOGSTATSD_PORT', 8125)
         self.statsd = statsd.DogStatsd(host, port)
 
+    def _apply_prefix(self, method):
+        def prefixed_method(metric, *args, **kwargs):
+            if self.prefix:
+                metric = '{}.{}'.format(self.prefix, metric)
+            return method(metric, *args, **kwargs)
+        return prefixed_method
+
     def __getattribute__(self, name):
         if name in DOGSTATSD_METHODS:
-            return getattr(object.__getattribute__(self, 'statsd'), name)
+            method = getattr(self.statsd, name)
+            if name == 'event':
+                return method
+            else:
+                return self._apply_prefix(method)
         else:
             return object.__getattribute__(self, name)
