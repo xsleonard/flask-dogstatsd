@@ -14,6 +14,7 @@ class DogStatsd(object):
 
     def init_app(self, app):
         self.app = app
+        app.statsd = self
         host = app.config.get('DOGSTATSD_HOST', 'localhost')
         port = app.config.get('DOGSTATSD_PORT', 8125)
         self.statsd = statsd.DogStatsd(host, port)

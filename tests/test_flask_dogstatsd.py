@@ -35,6 +35,7 @@ class TestDogStatsd(TestCase):
         mock_connect.assert_called_once_with(host, port)
         self.assertIsNotNone(dog.statsd)
         self.assertEqual(dog.app, self.app)
+        self.assertEqual(self.app.statsd, dog)
 
     @patch('statsd.DogStatsd.connect')
     def test_init_app_defaults(self, mock_connect):
