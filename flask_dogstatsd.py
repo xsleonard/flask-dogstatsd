@@ -23,7 +23,7 @@ class DogStatsd(object):
     def _apply_prefix(self, method):
         def prefixed_method(metric, *args, **kwargs):
             if self.prefix:
-                metric = '{0}.{1}'.format(self.prefix, metric)
+                metric = '{}.{}'.format(self.prefix, metric)
             return method(metric, *args, **kwargs)
         return prefixed_method
 

@@ -7,7 +7,7 @@ flask-dogstatsd
 
 Flask extension for [dogstatsd-python](https://github.com/DataDog/dogstatsd-python)
 
-Compatible with Python 2.6, 2.7, 3.3 and pypy
+Compatible with Python 2.7, 3.3 and pypy
 
 Installation
 ============

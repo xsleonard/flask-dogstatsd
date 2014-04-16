@@ -1,24 +1,7 @@
 from mock import patch
-from unittest import TestCase as _TestCase
+from unittest import TestCase
 from flask import Flask
 from flask_dogstatsd import DogStatsd, DOGSTATSD_METHODS
-
-
-class TestCase(_TestCase):
-
-    def assertIsNone(self, a):
-        # Python2.6 compatibility
-        if hasattr(super(TestCase, self), 'assertIsNone'):
-            super(TestCase, self).assertIsNone(a)
-        else:
-            self.assertTrue(a is None)
-
-    def assertIsNotNone(self, a):
-        # Python2.6 compatibility
-        if hasattr(super(TestCase, self), 'assertIsNotNone'):
-            super(TestCase, self).assertIsNotNone(a)
-        else:
-            self.assertTrue(a is not None)
 
 
 class TestDogStatsd(TestCase):
@@ -94,7 +77,7 @@ class TestDogStatsdPrefix(TestCase):
         kwargs = {'c': 9}
 
         def fn(m, a, b, c=None):
-            self.assertEqual(m, '{0}.{1}'.format(self.prefix, metric))
+            self.assertEqual(m, '{}.{}'.format(self.prefix, metric))
             self.assertEqual((a, b), args)
             self.assertEqual({'c': c}, kwargs)
 
@@ -108,7 +91,7 @@ class TestDogStatsdPrefix(TestCase):
 
     def test_methods_prefixed(self):
         for m in filter(lambda x: x != 'event', DOGSTATSD_METHODS):
-            with patch('statsd.DogStatsd.{0}'.format(m)) as mock_method:
+            with patch('statsd.DogStatsd.{}'.format(m)) as mock_method:
                 getattr(self.dog, m)('count')
-                metric = '{0}.count'.format(self.prefix)
+                metric = '{}.count'.format(self.prefix)
                 mock_method.assert_called_once_with(metric)
