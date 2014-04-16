@@ -94,7 +94,7 @@ class TestDogStatsdPrefix(TestCase):
         kwargs = {'c': 9}
 
         def fn(m, a, b, c=None):
-            self.assertEqual(m, '{}.{}'.format(self.prefix, metric))
+            self.assertEqual(m, '{0}.{1}'.format(self.prefix, metric))
             self.assertEqual((a, b), args)
             self.assertEqual({'c': c}, kwargs)
 
@@ -108,7 +108,7 @@ class TestDogStatsdPrefix(TestCase):
 
     def test_methods_prefixed(self):
         for m in filter(lambda x: x != 'event', DOGSTATSD_METHODS):
-            with patch('statsd.DogStatsd.{}'.format(m)) as mock_method:
+            with patch('statsd.DogStatsd.{0}'.format(m)) as mock_method:
                 getattr(self.dog, m)('count')
-                metric = '{}.count'.format(self.prefix)
+                metric = '{0}.count'.format(self.prefix)
                 mock_method.assert_called_once_with(metric)
