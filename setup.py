@@ -4,7 +4,7 @@
 Flask-DogStatsd
 -------------
 
-A Flask extension for dogstatsd-python
+A Flask extension for dogstatsd-python-fixed
 
 Links
 `````
@@ -145,7 +145,7 @@ setup(
     include_package_data=True,
     platforms='any',
     install_requires=[
-        'Flask', 'dogstatsd-python'
+        'Flask', 'dogstatsd-python-fixed'
     ],
     tests_require=[
         'nose',

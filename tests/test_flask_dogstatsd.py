@@ -10,7 +10,7 @@ class TestDogStatsd(TestCase):
         TestCase.setUp(self)
         self.app = Flask(__name__)
 
-    @patch('statsd.DogStatsd.connect')
+    @patch('dogstatsd.DogStatsd.connect')
     def test_init_app(self, mock_connect):
         dog = DogStatsd()
         host = '69.69.77.77'
@@ -25,7 +25,7 @@ class TestDogStatsd(TestCase):
         self.assertEqual(self.app.statsd, dog)
         self.assertEqual(dog.prefix, 'test')
 
-    @patch('statsd.DogStatsd.connect')
+    @patch('dogstatsd.DogStatsd.connect')
     def test_init_app_defaults(self, mock_connect):
         dog = DogStatsd()
         dog.init_app(self.app)
@@ -84,14 +84,14 @@ class TestDogStatsdPrefix(TestCase):
         m = self.dog._apply_prefix(fn)
         m(metric, *args, **kwargs)
 
-    @patch('statsd.DogStatsd.event')
+    @patch('dogstatsd.DogStatsd.event')
     def test_event_untouched(self, mock_event):
         self.dog.event('count')
         mock_event.assert_called_once_with('count')
 
     def test_methods_prefixed(self):
         for m in filter(lambda x: x != 'event', DOGSTATSD_METHODS):
-            with patch('statsd.DogStatsd.{}'.format(m)) as mock_method:
+            with patch('dogstatsd.DogStatsd.{}'.format(m)) as mock_method:
                 getattr(self.dog, m)('count')
                 metric = '{}.count'.format(self.prefix)
                 mock_method.assert_called_once_with(metric)

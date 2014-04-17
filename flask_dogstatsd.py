@@ -1,4 +1,4 @@
-import statsd
+import dogstatsd
 
 DOGSTATSD_METHODS = ['gauge', 'increment', 'decrement', 'histogram', 'timing',
                      'timed', 'set', 'event']
@@ -18,7 +18,7 @@ class DogStatsd(object):
         self.prefix = app.config.get('DOGSTATSD_PREFIX')
         host = app.config.get('DOGSTATSD_HOST', 'localhost')
         port = app.config.get('DOGSTATSD_PORT', 8125)
-        self.statsd = statsd.DogStatsd(host, port)
+        self.statsd = dogstatsd.DogStatsd(host, port)
 
     def _apply_prefix(self, method):
         def prefixed_method(metric, *args, **kwargs):
