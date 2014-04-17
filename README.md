@@ -5,7 +5,7 @@ flask-dogstatsd
 [![Build Status](https://travis-ci.org/xsleonard/flask-dogstatsd.png)](https://travis-ci.org/xsleonard/flask-dogstatsd)
 [![Coverage Status](https://coveralls.io/repos/xsleonard/flask-dogstatsd/badge.png)](https://coveralls.io/r/xsleonard/flask-dogstatsd)
 
-Flask extension for [dogstatsd-python](https://github.com/DataDog/dogstatsd-python)
+Flask extension for [dogstatsd-python-fixed](https://github.com/xsleonard/dogstatsd-python)
 
 Compatible with Python 2.7, 3.3 and pypy
 
