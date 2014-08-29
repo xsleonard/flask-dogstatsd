@@ -33,6 +33,9 @@ class TestDogStatsd(TestCase):
         self.assertIsNotNone(dog.statsd)
         self.assertEqual(dog.app, self.app)
         self.assertIs(dog.prefix, None)
+        self.assertTrue(dog.enabled)
+        self.assertEqual(dog.port, 8125)
+        self.assertEqual(dog.host, 'localhost')
 
     @patch.object(DogStatsd, 'init_app')
     def test_init_with_app(self, mock_init_app):
@@ -45,6 +48,18 @@ class TestDogStatsd(TestCase):
         mock_init_app.assert_not_called()
         self.assertIsNone(dog.app)
         self.assertIsNone(dog.statsd)
+
+    @patch('dogstatsd.DogStatsd.increment')
+    def test_get_statsd_attr(self, mock_incr):
+        dog = DogStatsd(app=self.app)
+        self.assertIsNotNone(dog.statsd)
+        dog.increment('count.something')
+        mock_incr.assert_called_once_with('count.something')
+
+        mock_incr.reset_mock()
+        dog.statsd = None
+        dog.increment('count.something')
+        mock_incr.assert_not_called()
 
     def test_getattribute(self):
         dog = DogStatsd(app=self.app)
@@ -60,6 +75,14 @@ class TestDogStatsd(TestCase):
                     mock_apply_prefix.assert_called_once_with(method)
         self.assertEqual(self.app, dog.app)
         self.assertIsNotNone(dog.statsd)
+
+    @patch('dogstatsd.DogStatsd.increment')
+    def test_disabled(self, mock_incr):
+        self.app.config['DOGSTATSD_ENABLED'] = False
+        dog = DogStatsd(app=self.app)
+        self.assertIsNone(dog.statsd)
+        dog.increment('count.something')
+        mock_incr.assert_not_called()
 
 
 class TestDogStatsdPrefix(TestCase):

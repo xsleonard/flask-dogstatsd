@@ -38,6 +38,7 @@ app = Flask(__name__)
 app.config['DOGSTATSD_HOST'] = 'localhost' # This is the default
 app.config['DOGSTATSD_PORT'] = 8125 # This is the default
 app.config['DOGSTATSD_PREFIX'] = 'app' # False-y values disable prefixing
+app.config['DOGSTATSD_ENABLED'] = True # This is the default
 
 dogstatsd = DogStatsd(app)
 
